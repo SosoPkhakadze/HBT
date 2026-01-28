@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Game for Tako 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            overflow-x: hidden;
+            padding: 20px;
+            position: relative;
+        }
+
+        .main-game-wrapper {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 1600px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .character-box {
+            background: rgba(30, 60, 114, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            min-width: 300px;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .character-image {
+            width: 100%;
+            max-width: 320px;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 4px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .character-name {
+            font-size: 1.6em;
+            font-weight: bold;
+            margin-top: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            background: rgba(30, 60, 114, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 1100px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-screen {
+            text-align: center;
+        }
+
+        .login-screen h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-screen p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .date-riddles {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px auto;
+            max-width: 500px;
+            text-align: left;
+        }
+
+        .riddle {
+            margin: 15px 0;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .riddle strong {
+            color: #ffd700;
+        }
+
+        .date-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .date-inputs select {
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            cursor: pointer;
+        }
+
+        .date-input button {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            background: #ff6b9d;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .date-input button:hover {
+            background: #ff4081;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+        }
+
+        .error-message {
+            color: #ffcccb;
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+
+        .game-screen {
+            display: none;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .game-header h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .player-section {
+            text-align: center;
+        }
+
+        .board-container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 10px;
+        }
+
+        .board-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 70px);
+            grid-template-rows: repeat(3, 70px);
+            gap: 5px;
+            margin: 0 auto;
+        }
+
+        .cell {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+        }
+
+        .cell:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        .cell.ship {
+            background: rgba(100, 200, 255, 0.5);
+        }
+
+        .cell.hit {
+            background: rgba(255, 100, 100, 0.7);
+        }
+
+        .cell.miss {
+            background: rgba(200, 200, 200, 0.4);
+        }
+
+        .cell.disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .cell.drag-over {
+            background: rgba(100, 255, 100, 0.5);
+            border-color: #00ff00;
+        }
+
+        .cell.ship-preview {
+            background: rgba(100, 200, 255, 0.3);
+            border: 2px dashed #4a9eff;
+        }
+
+        .draggable-ship {
+            background: rgba(100, 200, 255, 0.7);
+            border: 3px solid #4a9eff;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: move;
+            display: inline-block;
+            margin: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .draggable-ship:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(74, 158, 255, 0.4);
+        }
+
+        .draggable-ship.hidden {
+            display: none;
+        }
+
+        .setup-phase {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ships-container {
+            margin: 20px 0;
+        }
+
+        .setup-phase button {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .setup-phase button:hover:not(:disabled) {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .setup-phase button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .setup-phase button.reset-button {
+            background: #ff6b6b;
+        }
+
+        .setup-phase button.reset-button:hover:not(:disabled) {
+            background: #ff5252;
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            min-height: 60px;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        .winner-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .winner-screen h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .winner-image {
+            width: 350px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin: 20px auto;
+            border: 5px solid gold;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .crown {
+            font-size: 4em;
+            margin-bottom: -20px;
+        }
+
+        .winner-text {
+            font-size: 1.3em;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .chinese-text {
+            font-size: 1.5em;
+            color: #ffd700;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .play-again {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            background: #ff6b9d;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .play-again:hover {
+            background: #ff4081;
+            transform: translateY(-2px);
+        }
+
+        .loser-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .loser-screen h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ffcccb;
+        }
+
+        /* Fireworks animation */
+        .firework {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y));
+                opacity: 0;
+            }
+        }
+
+        /* Floating taunt messages */
+        .floating-taunt {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            z-index: 1000;
+            pointer-events: none;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            animation: floatUp 2.5s ease-out forwards;
+        }
+
+        .floating-taunt.tako-taunt {
+            border: 3px solid #ff69b4;
+        }
+
+        .floating-taunt.opponent-taunt {
+            border: 3px solid #ffd700;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.8);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(-20px) scale(1);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(-80px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-120px) scale(0.9);
+            }
+        }
+
+        /* Birthday floating elements */
+        .birthday-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .floating-envelope {
+            position: absolute;
+            font-size: 3em;
+            cursor: pointer;
+            pointer-events: all;
+            animation: floatDown linear infinite;
+            opacity: 1;
+            transition: transform 0.3s, filter 0.3s;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
+            z-index: 100;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            padding: 10px;
+        }
+
+        .floating-envelope:hover {
+            transform: scale(1.3) rotate(15deg);
+            filter: drop-shadow(0 8px 15px rgba(255, 215, 0, 0.8)) brightness(1.3);
+            animation-play-state: paused;
+            z-index: 101;
+        }
+
+        .floating-envelope:active {
+            transform: scale(1.4) rotate(20deg);
+            z-index: 101;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: #ff6b9d;
+            font-size: 1.8em;
+            animation: floatDown linear infinite;
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 5;
+            filter: drop-shadow(0 3px 6px rgba(255, 107, 157, 0.5));
+        }
+
+        @keyframes floatDown {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            95% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .letter-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe4e4 100%);
+            color: #333;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            max-width: 500px;
+            width: 90%;
+            font-family: 'Courier New', monospace;
+            border: 3px solid #ff6b9d;
+            animation: popIn 0.3s ease-out forwards;
+        }
+
+        @keyframes popIn {
+            to {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .letter-content {
+            font-size: 1.2em;
+            line-height: 1.8;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .letter-close {
+            padding: 10px 30px;
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .letter-close:hover {
+            background: #ff4081;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1999;
+            display: none;
+        }
+
+        .modal-overlay.show {
+            display: block;
+        }
+
+        /* Knight rescue animation */
+        .knight-rescue {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3000;
+            animation: knightDrop 1s ease-out forwards;
+        }
+
+        .knight-image {
+            width: 400px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 5px solid #ffd700;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes knightDrop {
+            0% {
+                transform: translate(-50%, -200%) rotate(-10deg);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -45%) rotate(5deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .main-game-wrapper {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .character-box {
+                min-width: auto;
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .character-image {
+                max-width: 280px;
+                height: 280px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .main-game-wrapper {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .character-box {
+                width: 100%;
+                max-width: 300px;
+                padding: 20px;
+            }
+
+            .character-image {
+                max-width: 200px;
+                height: 200px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .game-area {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .board {
+                grid-template-columns: repeat(3, 60px);
+                grid-template-rows: repeat(3, 60px);
+            }
+
+            .cell {
+                width: 60px;
+                height: 60px;
+            }
+
+            .floating-envelope {
+                font-size: 2.5em;
+            }
+
+            .floating-heart {
+                font-size: 1.3em;
+            }
+
+            .letter-modal {
+                width: 85%;
+                padding: 25px;
+            }
+
+            .letter-content {
+                font-size: 1em;
+            }
+
+            .winner-image {
+                width: 250px;
+                height: 250px;
+            }
+
+            .knight-image {
+                width: 280px;
+                height: 280px;
+            }
+        }
+
+        /* Static random envelopes (bigger, clickable, random positions) */
+        .static-envelope {
+            position: fixed;
+            font-size: 4.5em;
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.3s, filter 0.3s;
+            filter: drop-shadow(0 8px 15px rgba(255, 215, 0, 0.6));
+            animation: pulse 2s ease-in-out infinite;
+            pointer-events: all;
+        }
+
+        .static-envelope:hover {
+            transform: scale(1.4) rotate(20deg);
+            filter: drop-shadow(0 10px 25px rgba(255, 215, 0, 1)) brightness(1.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.15) rotate(5deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .main-game-wrapper {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .character-box {
+                padding: 20px;
+                min-width: auto;
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .character-image {
+                max-width: 220px;
+                height: 220px;
+            }
+
+            .character-name {
+                font-size: 1.3em;
+            }
+            
+            .game-area {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .container {
+                padding: 20px;
+                max-width: 100%;
+            }
+
+            .board {
+                grid-template-columns: repeat(3, 60px);
+                grid-template-rows: repeat(3, 60px);
+            }
+
+            .cell {
+                width: 60px;
+                height: 60px;
+                font-size: 1.2em;
+            }
+
+            .game-header h2 {
+                font-size: 1.5em;
+            }
+
+            .game-header p {
+                font-size: 0.9em;
+            }
+
+            .board-title {
+                font-size: 1.1em;
+            }
+
+            .draggable-ship {
+                font-size: 0.9em;
+                padding: 12px 20px;
+            }
+
+            .setup-phase button {
+                font-size: 0.9em;
+                padding: 10px 20px;
+            }
+
+            .message-box {
+                font-size: 0.95em;
+                padding: 12px;
+            }
+
+            .winner-image {
+                width: 250px;
+                height: 250px;
+            }
+
+            .winner-screen h1 {
+                font-size: 2em;
+            }
+
+            .winner-text {
+                font-size: 1em;
+            }
+
+            .chinese-text {
+                font-size: 1.2em;
+            }
+
+            .crown {
+                font-size: 3em;
+            }
+
+            .login-screen h1 {
+                font-size: 2em;
+            }
+
+            .login-screen p {
+                font-size: 1em;
+            }
+
+            .date-riddles {
+                padding: 15px;
+                font-size: 0.95em;
+            }
+
+            .date-inputs select {
+                font-size: 1em;
+                padding: 10px 15px;
+            }
+
+            .date-input button {
+                font-size: 1em;
+                padding: 12px 30px;
+            }
+
+            .floating-envelope {
+                font-size: 2.5em;
+            }
+
+            .floating-heart {
+                font-size: 1.5em;
+            }
+
+            .letter-modal {
+                padding: 25px;
+                max-width: 90%;
+            }
+
+            .letter-content {
+                font-size: 1em;
+            }
+
+            .knight-image {
+                width: 280px;
+                height: 280px;
+            }
+
+            .floating-taunt {
+                font-size: 1em;
+                padding: 10px 15px;
+                max-width: 80%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .character-image {
+                max-width: 180px;
+                height: 180px;
+            }
+
+            .board {
+                grid-template-columns: repeat(3, 50px);
+                grid-template-rows: repeat(3, 50px);
+            }
+
+            .cell {
+                width: 50px;
+                height: 50px;
+                font-size: 1em;
+            }
+
+            .game-header h2 {
+                font-size: 1.3em;
+            }
+
+            .winner-image {
+                width: 200px;
+                height: 200px;
+            }
+
+            .knight-image {
+                width: 220px;
+                height: 220px;
+            }
+
+            .floating-envelope {
+                font-size: 2em;
+            }
+
+            .floating-heart {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Birthday floating elements - always visible -->
+    <div class="birthday-background" id="birthdayBackground"></div>
+    <div class="modal-overlay" id="modalOverlay"></div>
+
+    <div id="loginWrapper" style="width: 100%; position: relative; z-index: 10;">
+        <div class="container" style="margin: 0 auto;">
+            <!-- Login Screen -->
+            <div class="login-screen" id="loginScreen">
+                <h1>💕 Welcome, My Love 💕</h1>
+                <p>Answer this special question to unlock your surprise...</p>
+                
+                <div class="date-riddles">
+                    <div class="riddle">
+                        <strong>Question:</strong> How old was Tako when we became girlfriend and boyfriend? 💖
+                    </div>
+                </div>
+
+                <div class="date-inputs">
+                    <select id="ageSelect" style="width: 200px;">
+                        <option value="">Select Age</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                    </select>
+                </div>
+
+                <div class="date-input">
+                    <button onclick="checkDate()">Enter</button>
+                </div>
+                <div class="error-message" id="errorMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameWrapper" class="main-game-wrapper" style="display: none;">
+        <!-- Tako's Character Box -->
+        <div class="character-box">
+            <img src="assets/tako_normal.png" alt="Tako" class="character-image" id="takoImage">
+            <div class="character-name">Tako 💖</div>
+        </div>
+
+        <!-- Game Container -->
+        <div class="container">
+            <div class="game-screen" id="gameScreen" style="display: block;">
+                <div class="game-header">
+                    <h2>🚢 Battleship Challenge 🚢</h2>
+                    <p>Defeat your opponent to prove you're the ultimate genius!</p>
+                </div>
+
+                <div class="setup-phase" id="setupPhase">
+                    <p style="font-size: 1.2em; margin-bottom: 15px;">Drag and drop your ships onto your board!</p>
+                    <p style="margin-bottom: 15px;">Ships placed: <span id="shipsPlaced">0</span>/2</p>
+                    
+                    <div class="ships-container">
+                        <div class="draggable-ship" draggable="true" id="ship1" data-ship-index="0">
+                            🚢 Ship 1 (2 cells)
+                        </div>
+                        <div class="draggable-ship" draggable="true" id="ship2" data-ship-index="1">
+                            🚢 Ship 2 (2 cells)
+                        </div>
+                    </div>
+                    
+                    <button onclick="rotateShip()">Rotate Ship (Currently: <span id="orientation">Horizontal</span>)</button>
+                    <button onclick="resetShips()" class="reset-button">Reset Ships</button>
+                    <button onclick="startGame()" id="startButton" disabled>Start Battle!</button>
+                </div>
+
+                <div class="game-area">
+                    <!-- Tako's Board -->
+                    <div class="player-section">
+                        <div class="board-container">
+                            <div class="board-title">Your Fleet 💙</div>
+                            <div class="board" id="playerBoard"></div>
+                        </div>
+                    </div>
+
+                    <!-- Opponent's Board -->
+                    <div class="player-section">
+                        <div class="board-container">
+                            <div class="board-title">Enemy Waters 🔥</div>
+                            <div class="board" id="opponentBoard"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-box" id="messageBox">
+                    Drag ships onto your board to begin!
+                </div>
+            </div>
+
+            <!-- Winner Screen -->
+            <div class="winner-screen" id="winnerScreen">
+                <div class="crown">👑</div>
+                <h1>THE ULTIMATE HUMAN/GENIUS!</h1>
+                <img src="assets/winner.png" alt="Winner Tako" class="winner-image">
+                <div class="chinese-text">你是最棒的！(You are the best!)</div>
+                <div class="winner-text">
+                    You've defeated the mighty opponent and proven your strategic genius!<br>
+                    Just like Amy Santiago would be proud! 🎉<br><br>
+                    <strong style="font-size: 1.2em; color: #ffd700;">But I am the real winner because I have you!<br>Happy Birthday my little princess! 👸💖</strong>
+                </div>
+                <button class="play-again" onclick="resetGame()">Play Again</button>
+            </div>
+
+            <!-- Loser Screen -->
+            <div class="loser-screen" id="loserScreen">
+                <h1>Better luck next time! 💪</h1>
+                <img src="assets/china_winner.png" alt="Opponent Wins" class="winner-image">
+                <div class="chinese-text">哈哈，我赢了！(Haha, I won!)</div>
+                <div class="winner-text">
+                    Don't worry, even the greatest strategists lose sometimes!<br>
+                    Try again and show them who's boss! 🔥
+                </div>
+                <button class="play-again" onclick="resetGame()">Try Again</button>
+            </div>
+        </div>
+
+        <!-- Opponent's Character Box -->
+        <div class="character-box">
+            <img src="assets/china_normal.png" alt="Opponent" class="character-image" id="opponentImage">
+            <div class="character-name">小龙 (Xiǎo Lóng) 🐉</div>
+        </div>
+    </div>
+
+    <script>
+        // Birthday messages for envelopes
+        const birthdayMessages = [
+            "Happy Birthday Bachu! 🎂💕\n\nYou light up my world every single day!",
+            "Practice and be prepared for our next battle! 🎮\n\nYou're getting better every time!",
+            "Wish you all the best my love! ✨\n\nMay all your dreams come true!",
+            "Another year older, another year more beautiful! 🌹\n\nI'm so lucky to have you!",
+            "Happy Birthday to my gaming partner! 🎮\n\nLet's conquer more games together!",
+            "You're my favorite person in the whole world! 🌍💖\n\nHappy Birthday my princess!",
+            "Every day with you is a gift! 🎁\n\nThank you for being you!",
+            "Happy Birthday to the smartest, funniest, most amazing person! 🎉\n\nYou're one of a kind!",
+            "I hope this year brings you endless joy! 😊\n\nYou deserve all the happiness!",
+            "Nine-Nine! 👮‍♀️\n\nHappy Birthday to my real-life Amy Santiago!"
+        ];
+
+        function startBirthdayAnimation() {
+            const background = document.getElementById('birthdayBackground');
+            
+            // Create envelopes more frequently
+            setInterval(() => {
+                createFloatingEnvelope();
+            }, 2000);
+            
+            // Create hearts more frequently
+            setInterval(() => {
+                createFloatingHeart();
+            }, 800);
+            
+            // Initial burst - more envelopes and hearts
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => createFloatingEnvelope(), i * 500);
+            }
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => createFloatingHeart(), i * 300);
+            }
+            
+            // Create 2-3 static random envelopes
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => createStaticEnvelope(), i * 1000);
+            }
+        }
+
+        function createFloatingEnvelope() {
+            const background = document.getElementById('birthdayBackground');
+            const envelope = document.createElement('div');
+            envelope.className = 'floating-envelope';
+            envelope.textContent = '💌';
+            envelope.style.left = Math.random() * 100 + '%';
+            envelope.style.animationDuration = (12 + Math.random() * 8) + 's';
+            envelope.style.animationDelay = '0s';
+            
+            const messageIndex = Math.floor(Math.random() * birthdayMessages.length);
+            
+            // Add both click and touch events for better compatibility
+            const openLetterHandler = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                envelope.remove();
+                openLetter(birthdayMessages[messageIndex]);
+            };
+            
+            envelope.addEventListener('click', openLetterHandler);
+            envelope.addEventListener('touchstart', openLetterHandler);
+            
+            background.appendChild(envelope);
+            
+            setTimeout(() => {
+                envelope.remove();
+            }, 22000);
+        }
+
+        // Create static random positioned envelopes (bigger, more obvious)
+        function createStaticEnvelope() {
+            const envelope = document.createElement('div');
+            envelope.className = 'static-envelope';
+            envelope.textContent = '💌';
+            
+            // Random position avoiding edges
+            const x = 10 + Math.random() * 80;
+            const y = 10 + Math.random() * 80;
+            envelope.style.left = x + '%';
+            envelope.style.top = y + '%';
+            
+            const messageIndex = Math.floor(Math.random() * birthdayMessages.length);
+            
+            const openLetterHandler = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                envelope.remove();
+                openLetter(birthdayMessages[messageIndex]);
+                // Create a new one after a delay
+                setTimeout(createStaticEnvelope, 3000);
+            };
+            
+            envelope.addEventListener('click', openLetterHandler);
+            envelope.addEventListener('touchstart', openLetterHandler);
+            
+            document.body.appendChild(envelope);
+        }
+
+        function createFloatingHeart() {
+            const background = document.getElementById('birthdayBackground');
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.textContent = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (10 + Math.random() * 6) + 's';
+            heart.style.animationDelay = '0s';
+            
+            background.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 18000);
+        }
+
+        function openLetter(message) {
+            const overlay = document.getElementById('modalOverlay');
+            overlay.classList.add('show');
+            
+            const modal = document.createElement('div');
+            modal.className = 'letter-modal';
+            modal.innerHTML = `
+                <div class="letter-content">${message.replace(/\n/g, '<br>')}</div>
+                <button class="letter-close" onclick="closeLetter(this)">Close ❤️</button>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add touch support for overlay close
+            const closeHandler = (e) => {
+                if (e.target === overlay) {
+                    closeLetter(modal);
+                }
+            };
+            overlay.addEventListener('click', closeHandler);
+            overlay.addEventListener('touchstart', closeHandler);
+        }
+
+        function closeLetter(element) {
+            const modal = element.closest ? element.closest('.letter-modal') : element;
+            const overlay = document.getElementById('modalOverlay');
+            
+            if (!modal) return;
+            
+            modal.style.animation = 'none';
+            modal.style.transform = 'translate(-50%, -50%) scale(0)';
+            overlay.classList.remove('show');
+            
+            // Remove all event listeners
+            overlay.onclick = null;
+            
+            setTimeout(() => {
+                modal.remove();
+            }, 300);
+        }
+
+        // Game state
+        let playerBoard = [];
+        let opponentBoard = [];
+        let playerShips = [];
+        let opponentShips = [];
+        let currentOrientation = 'horizontal';
+        let shipsPlaced = 0;
+        let gameStarted = false;
+        let playerHits = 0;
+        let opponentHits = 0;
+        let draggedShipIndex = null;
+        let placedShips = [false, false];
+        let isPlayerTurn = true;
+        let canClick = true;
+
+        const BOARD_SIZE = 3;
+        const SHIP_SIZES = [2, 2];
+
+        // Chinese taunts when opponent hits Tako's ship
+        const chineseHits = [
+            "哈哈输了！(Haha, you lose!)",
+            "中国比你强！(China is better than you!)",
+            "太弱了！(Too weak!)",
+            "你不行啊！(You can't do it!)",
+            "我太厉害了！(I'm too strong!)"
+        ];
+
+        // Tako's taunts when she hits opponent's ship
+        const takoHits = [
+            "接招吧你个笨蛋！(Take that, you fool!)",
+            "მასე მოგიხდება შე წვრილთვალება!",
+            "哈！打中了！(Ha! Got you!)",
+            "吃我一炮！(Eat this!)",
+            "你完蛋了！(You're done for!)"
+        ];
+
+        const shipSunkMessages = [
+            "Your ship has been destroyed! 💥",
+            "Another one bites the dust! 🔥",
+            "Ship down! 🌊"
+        ];
+
+        const opponentShipSunk = [
+            "Excellent shot! Enemy ship destroyed! ⚓",
+            "You sunk their battleship! 🎯",
+            "Direct hit! Ship eliminated! 💪"
+        ];
+
+        function showFloatingTaunt(message, isFromTako) {
+            const taunt = document.createElement('div');
+            taunt.className = `floating-taunt ${isFromTako ? 'tako-taunt' : 'opponent-taunt'}`;
+            taunt.textContent = message;
+            
+            // Position near the character image
+            if (isFromTako) {
+                const takoBox = document.querySelector('.character-box:first-child');
+                const rect = takoBox.getBoundingClientRect();
+                taunt.style.left = (rect.right - 50) + 'px';
+                taunt.style.top = (rect.top + rect.height / 2) + 'px';
+            } else {
+                const opponentBox = document.querySelector('.character-box:last-child');
+                const rect = opponentBox.getBoundingClientRect();
+                taunt.style.left = (rect.left - 200) + 'px';
+                taunt.style.top = (rect.top + rect.height / 2) + 'px';
+            }
+            
+            document.body.appendChild(taunt);
+            
+            setTimeout(() => {
+                taunt.remove();
+            }, 2500);
+        }
+
+        function checkDate() {
+            const age = document.getElementById('ageSelect').value;
+            
+            if (age === '17') {
+                document.getElementById('loginWrapper').style.display = 'none';
+                document.getElementById('gameWrapper').style.display = 'flex';
+                initializeGame();
+            } else {
+                document.getElementById('errorMessage').textContent = '❌ Hmm, that\'s not quite right... Think about our special day! 💕';
+            }
+        }
+
+        // Start birthday animation immediately on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            startBirthdayAnimation();
+        });
+
+        // Initialize game
+        function initializeGame() {
+            playerBoard = createEmptyBoard();
+            opponentBoard = createEmptyBoard();
+            playerShips = [];
+            opponentShips = [];
+            shipsPlaced = 0;
+            gameStarted = false;
+            playerHits = 0;
+            opponentHits = 0;
+            placedShips = [false, false];
+            
+            renderBoard('playerBoard', playerBoard, true);
+            renderBoard('opponentBoard', opponentBoard, false);
+            placeOpponentShips();
+            setupDragAndDrop();
+        }
+
+        function createEmptyBoard() {
+            const board = [];
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                board[i] = [];
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    board[i][j] = 0;
+                }
+            }
+            return board;
+        }
+
+        function renderBoard(elementId, board, isPlayer) {
+            const boardElement = document.getElementById(elementId);
+            boardElement.innerHTML = '';
+            
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    
+                    if (isPlayer) {
+                        if (board[i][j] === 1) cell.classList.add('ship');
+                        if (board[i][j] === 2) {
+                            cell.classList.add('hit');
+                            cell.textContent = '💥';
+                        }
+                        if (board[i][j] === 3) {
+                            cell.classList.add('miss');
+                            cell.textContent = '💨';
+                        }
+                    } else {
+                        if (board[i][j] === 2) {
+                            cell.classList.add('hit');
+                            cell.textContent = '💥';
+                        }
+                        if (board[i][j] === 3) {
+                            cell.classList.add('miss');
+                            cell.textContent = '💨';
+                        }
+                        if (gameStarted) {
+                            cell.onclick = () => playerAttack(i, j);
+                        }
+                    }
+                    
+                    boardElement.appendChild(cell);
+                }
+            }
+        }
+
+        function setupDragAndDrop() {
+            const ships = document.querySelectorAll('.draggable-ship');
+            ships.forEach(ship => {
+                ship.addEventListener('dragstart', handleDragStart);
+                ship.addEventListener('dragend', handleDragEnd);
+            });
+
+            const playerBoardEl = document.getElementById('playerBoard');
+            playerBoardEl.addEventListener('dragover', handleDragOver);
+            playerBoardEl.addEventListener('drop', handleDrop);
+            playerBoardEl.addEventListener('dragleave', handleDragLeave);
+        }
+
+        function handleDragStart(e) {
+            draggedShipIndex = parseInt(e.target.dataset.shipIndex);
+            e.target.style.opacity = '0.4';
+        }
+
+        function handleDragEnd(e) {
+            e.target.style.opacity = '1';
+            clearPreview();
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            const cell = e.target.closest('.cell');
+            if (cell) {
+                const row = parseInt(cell.dataset.row);
+                const col = parseInt(cell.dataset.col);
+                showShipPreview(row, col);
+            }
+        }
+
+        function handleDragLeave(e) {
+            if (e.target.id === 'playerBoard') {
+                clearPreview();
+            }
+        }
+
+        function showShipPreview(row, col) {
+            clearPreview();
+            
+            const shipSize = SHIP_SIZES[draggedShipIndex];
+            const positions = [];
+            let valid = true;
+            
+            if (currentOrientation === 'horizontal') {
+                if (col + shipSize > BOARD_SIZE) {
+                    valid = false;
+                } else {
+                    for (let i = 0; i < shipSize; i++) {
+                        if (playerBoard[row][col + i] === 1) {
+                            valid = false;
+                            break;
+                        }
+                        positions.push([row, col + i]);
+                    }
+                }
+            } else {
+                if (row + shipSize > BOARD_SIZE) {
+                    valid = false;
+                } else {
+                    for (let i = 0; i < shipSize; i++) {
+                        if (playerBoard[row + i][col] === 1) {
+                            valid = false;
+                            break;
+                        }
+                        positions.push([row + i, col]);
+                    }
+                }
+            }
+            
+            if (valid) {
+                positions.forEach(([r, c]) => {
+                    const cell = document.querySelector(`#playerBoard .cell[data-row="${r}"][data-col="${c}"]`);
+                    if (cell) {
+                        cell.classList.add('ship-preview');
+                    }
+                });
+            }
+        }
+
+        function clearPreview() {
+            document.querySelectorAll('.ship-preview').forEach(cell => {
+                cell.classList.remove('ship-preview');
+            });
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const cell = e.target.closest('.cell');
+            if (!cell) return;
+
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+            
+            clearPreview();
+            
+            if (placeShip(row, col, draggedShipIndex)) {
+                const shipElement = document.getElementById(`ship${draggedShipIndex + 1}`);
+                shipElement.classList.add('hidden');
+            }
+        }
+
+        function placeShip(row, col, shipIndex) {
+            // Remove old ship placement if exists
+            if (placedShips[shipIndex]) {
+                const oldShip = playerShips.findIndex(ship => ship.shipIndex === shipIndex);
+                if (oldShip !== -1) {
+                    playerShips[oldShip].positions.forEach(([r, c]) => {
+                        playerBoard[r][c] = 0;
+                    });
+                    playerShips.splice(oldShip, 1);
+                }
+            }
+            
+            const shipSize = SHIP_SIZES[shipIndex];
+            const positions = [];
+            
+            if (currentOrientation === 'horizontal') {
+                if (col + shipSize > BOARD_SIZE) return false;
+                for (let i = 0; i < shipSize; i++) {
+                    if (playerBoard[row][col + i] === 1) return false;
+                    positions.push([row, col + i]);
+                }
+            } else {
+                if (row + shipSize > BOARD_SIZE) return false;
+                for (let i = 0; i < shipSize; i++) {
+                    if (playerBoard[row + i][col] === 1) return false;
+                    positions.push([row + i, col]);
+                }
+            }
+            
+            positions.forEach(([r, c]) => {
+                playerBoard[r][c] = 1;
+            });
+            
+            playerShips.push({ positions, shipIndex });
+            
+            if (!placedShips[shipIndex]) {
+                shipsPlaced++;
+                document.getElementById('shipsPlaced').textContent = shipsPlaced;
+            }
+            
+            placedShips[shipIndex] = true;
+            
+            if (shipsPlaced === 2) {
+                document.getElementById('startButton').disabled = false;
+            }
+            
+            renderBoard('playerBoard', playerBoard, true);
+            return true;
+        }
+
+        function resetShips() {
+            // Clear board
+            playerBoard = createEmptyBoard();
+            playerShips = [];
+            placedShips = [false, false];
+            shipsPlaced = 0;
+            
+            // Show all ships again
+            document.querySelectorAll('.draggable-ship').forEach(ship => {
+                ship.classList.remove('hidden');
+            });
+            
+            document.getElementById('shipsPlaced').textContent = '0';
+            document.getElementById('startButton').disabled = true;
+            renderBoard('playerBoard', playerBoard, true);
+            document.getElementById('messageBox').textContent = 'Drag ships onto your board to begin!';
+        }
+
+        function rotateShip() {
+            currentOrientation = currentOrientation === 'horizontal' ? 'vertical' : 'horizontal';
+            document.getElementById('orientation').textContent = 
+                currentOrientation === 'horizontal' ? 'Horizontal' : 'Vertical';
+        }
+
+        function placeOpponentShips() {
+            for (let shipSize of SHIP_SIZES) {
+                let placed = false;
+                while (!placed) {
+                    const orientation = Math.random() < 0.5 ? 'horizontal' : 'vertical';
+                    const row = Math.floor(Math.random() * BOARD_SIZE);
+                    const col = Math.floor(Math.random() * BOARD_SIZE);
+                    
+                    const positions = [];
+                    let valid = true;
+                    
+                    if (orientation === 'horizontal') {
+                        if (col + shipSize > BOARD_SIZE) continue;
+                        for (let i = 0; i < shipSize; i++) {
+                            if (opponentBoard[row][col + i] === 1) {
+                                valid = false;
+                                break;
+                            }
+                            positions.push([row, col + i]);
+                        }
+                    } else {
+                        if (row + shipSize > BOARD_SIZE) continue;
+                        for (let i = 0; i < shipSize; i++) {
+                            if (opponentBoard[row + i][col] === 1) {
+                                valid = false;
+                                break;
+                            }
+                            positions.push([row + i, col]);
+                        }
+                    }
+                    
+                    if (valid) {
+                        positions.forEach(([r, c]) => {
+                            opponentBoard[r][c] = 1;
+                        });
+                        opponentShips.push({ positions });
+                        placed = true;
+                    }
+                }
+            }
+        }
+
+        function startGame() {
+            if (shipsPlaced < 2) {
+                document.getElementById('messageBox').textContent = '⚠️ Please place all your ships first!';
+                return;
+            }
+            gameStarted = true;
+            document.getElementById('setupPhase').style.display = 'none';
+            document.getElementById('messageBox').textContent = 'Battle started! Opponent goes first... 🎯';
+            renderBoard('opponentBoard', opponentBoard, false);
+            
+            // Opponent goes first
+            isPlayerTurn = false;
+            canClick = false;
+            setTimeout(opponentAttack, 2000);
+        }
+
+        function playerAttack(row, col) {
+            if (!gameStarted) return;
+            if (!isPlayerTurn || !canClick) return;
+            if (opponentBoard[row][col] === 2 || opponentBoard[row][col] === 3) return;
+            
+            canClick = false;
+            
+            if (opponentBoard[row][col] === 1) {
+                opponentBoard[row][col] = 2;
+                playerHits++;
+                
+                changeTakoImage('assets/tako_happy.png', 1500);
+                
+                // Randomly choose between sad and angry for opponent
+                const opponentReaction = Math.random() < 0.5 ? 'assets/china_sad.png' : 'assets/china_angry.png';
+                changeOpponentImage(opponentReaction, 1500);
+                
+                const randomTaunt = takoHits[Math.floor(Math.random() * takoHits.length)];
+                showFloatingTaunt(randomTaunt, true);
+                document.getElementById('messageBox').textContent = '💥 Direct Hit! 🎯';
+                
+                if (checkShipSunk(opponentShips, opponentBoard)) {
+                    setTimeout(() => {
+                        document.getElementById('messageBox').textContent = '🔥 Enemy ship destroyed!';
+                        changeOpponentImage('assets/china_angry.png', 2000);
+                        changeTakoImage('assets/tako_happy.png', 2000);
+                    }, 1500);
+                }
+                
+                if (playerHits === 4) {
+                    setTimeout(showWinner, 2000);
+                    return;
+                }
+            } else {
+                opponentBoard[row][col] = 3;
+                document.getElementById('messageBox').textContent = '💨 Missed! Opponent\'s turn...';
+            }
+            
+            renderBoard('opponentBoard', opponentBoard, false);
+            
+            isPlayerTurn = false;
+            setTimeout(opponentAttack, 2500);
+        }
+
+        function opponentAttack() {
+            let row, col;
+            do {
+                row = Math.floor(Math.random() * BOARD_SIZE);
+                col = Math.floor(Math.random() * BOARD_SIZE);
+            } while (playerBoard[row][col] === 2 || playerBoard[row][col] === 3);
+            
+            if (playerBoard[row][col] === 1) {
+                playerBoard[row][col] = 2;
+                opponentHits++;
+                
+                // Randomly choose between sad and angry for Tako when hit
+                const takoReaction = Math.random() < 0.5 ? 'assets/tako_sad.png' : 'assets/tako_angry.png';
+                changeTakoImage(takoReaction, 1500);
+                changeOpponentImage('assets/china_happy.png', 1500);
+                
+                const randomTaunt = chineseHits[Math.floor(Math.random() * chineseHits.length)];
+                showFloatingTaunt(randomTaunt, false);
+                document.getElementById('messageBox').textContent = '💥 Your ship was hit! 💔';
+                
+                if (checkShipSunk(playerShips, playerBoard)) {
+                    setTimeout(() => {
+                        document.getElementById('messageBox').textContent = '🌊 Your ship has been destroyed!';
+                        changeTakoImage('assets/tako_sad.png', 2000);
+                    }, 1500);
+                }
+                
+                if (opponentHits === 4) {
+                    setTimeout(showLoser, 2000);
+                    return;
+                }
+            } else {
+                playerBoard[row][col] = 3;
+                document.getElementById('messageBox').textContent = '💨 Enemy missed! Your turn! 🎯';
+            }
+            
+            renderBoard('playerBoard', playerBoard, true);
+            
+            isPlayerTurn = true;
+            setTimeout(() => {
+                canClick = true;
+            }, 1000);
+        }
+
+        function checkShipSunk(ships, board) {
+            for (let i = ships.length - 1; i >= 0; i--) {
+                const ship = ships[i];
+                let allHit = ship.positions.every(([r, c]) => board[r][c] === 2);
+                if (allHit) {
+                    ships.splice(i, 1);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function changeTakoImage(imageName, duration) {
+            const img = document.getElementById('takoImage');
+            img.src = imageName;
+            setTimeout(() => {
+                img.src = 'assets/tako_normal.png';
+            }, duration);
+        }
+
+        function changeOpponentImage(imageName, duration) {
+            const img = document.getElementById('opponentImage');
+            img.src = imageName;
+            setTimeout(() => {
+                img.src = 'assets/china_normal.png';
+            }, duration);
+        }
+
+        function createFirework(x, y) {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#ff69b4'];
+            const particles = 30;
+            
+            for (let i = 0; i < particles; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                firework.style.left = x + 'px';
+                firework.style.top = y + 'px';
+                
+                const angle = (Math.PI * 2 * i) / particles;
+                const velocity = 100 + Math.random() * 100;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                firework.style.setProperty('--x', vx + 'px');
+                firework.style.setProperty('--y', vy + 'px');
+                firework.style.animation = 'explode 1s ease-out forwards';
+                
+                document.body.appendChild(firework);
+                
+                setTimeout(() => {
+                    firework.remove();
+                }, 1000);
+            }
+        }
+
+        function startFireworks() {
+            const interval = setInterval(() => {
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight * 0.5;
+                createFirework(x, y);
+            }, 300);
+            
+            setTimeout(() => {
+                clearInterval(interval);
+            }, 5000);
+        }
+
+        function showWinner() {
+            changeTakoImage('assets/tako_happy.png', 99999);
+            
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('winnerScreen').style.display = 'block';
+            startFireworks();
+        }
+
+        function showLoser() {
+            changeTakoImage('assets/tako_sad.png', 99999);
+            
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('loserScreen').style.display = 'block';
+            
+            // Knight rescue after 1.5 seconds
+            setTimeout(() => {
+                const knightRescue = document.createElement('div');
+                knightRescue.className = 'knight-rescue';
+                knightRescue.innerHTML = `
+                    <img src="assets/knight.png" alt="Knight" class="knight-image">
+                `;
+                document.body.appendChild(knightRescue);
+                
+                // Change loser image to china crying and update text
+                setTimeout(() => {
+                    const loserImg = document.querySelector('.loser-screen img');
+                    loserImg.src = 'assets/china_sad.png';
+                    
+                    const loserTitle = document.querySelector('.loser-screen h1');
+                    loserTitle.textContent = 'I will save you my queen! 👑';
+                    loserTitle.style.color = '#ffd700';
+                    
+                    const chineseText = document.querySelector('.loser-screen .chinese-text');
+                    chineseText.textContent = '别哭了！(Don\'t cry!)';
+                }, 1000);
+            }, 1500);
+        }
+
+        function resetGame() {
+            document.getElementById('winnerScreen').style.display = 'none';
+            document.getElementById('loserScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            document.getElementById('setupPhase').style.display = 'block';
+            
+            // Remove knight rescue if exists
+            const knight = document.querySelector('.knight-rescue');
+            if (knight) knight.remove();
+            
+            // Reset loser screen to original
+            const loserTitle = document.querySelector('.loser-screen h1');
+            loserTitle.textContent = 'Better luck next time! 💪';
+            loserTitle.style.color = '#ffcccb';
+            
+            const loserImg = document.querySelector('.loser-screen img');
+            loserImg.src = 'assets/china_winner.png';
+            
+            const chineseText = document.querySelector('.loser-screen .chinese-text');
+            chineseText.textContent = '哈哈，我赢了！(Haha, I won!)';
+            
+            // Reset draggable ships
+            document.querySelectorAll('.draggable-ship').forEach(ship => {
+                ship.classList.remove('hidden');
+            });
+            
+            // Reset turn states
+            isPlayerTurn = true;
+            canClick = true;
+            
+            initializeGame();
+        }
+    </script>
+</body>
+</html>
