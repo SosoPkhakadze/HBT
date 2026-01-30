@@ -958,6 +958,14 @@
         }
 
         @media (max-width: 768px) {
+            .character-popup.tako-popup {
+                left: 30%;
+            }
+
+            .character-popup.opponent-popup {
+                left: 70%;
+            }
+            
             body {
                 padding: 10px;
             }
@@ -1245,7 +1253,6 @@
                 <div class="chinese-text">你是最棒的！(You are the best!)</div>
                 <div class="winner-text">
                     არც არავის ეპარებოდა ეჭვი! 🎉<br>
-                    <strong style="font-size: 1.2em; color: #ffd700;">But I am the real winner because I have you!<br>Happy Birthday my little princess! 👸💖</strong>
                 </div>
                 <button class="play-again" onclick="resetGame()">Play Again</button>
             </div>
@@ -1267,16 +1274,15 @@
     <script>
         // Birthday messages for envelopes
         const birthdayMessages = [
+            "გილოცავ საყვარელო 🎂💕",
+            "მიყვარხარმიყვარხარმიყვარხარ! ❤️",
             "Happy Birthday Bachu! 🎂💕\n\nYou light up my world every single day!",
-            "Practice and be prepared for our next battle! 🎮\n\nYou're getting better every time!",
             "Wish you all the best my love! ✨\n\nMay all your dreams come true!",
             "Another year older, another year more beautiful! 🌹\n\nI'm so lucky to have you!",
             "Happy Birthday to my gaming partner! 🎮\n\nLet's conquer more games together!",
             "You're my favorite person in the whole world! 🌍💖\n\nHappy Birthday my princess!",
             "Every day with you is a gift! 🎁\n\nThank you for being you!",
-            "Happy Birthday to the smartest, funniest, most amazing person! 🎉\n\nYou're one of a kind!",
-            "I hope this year brings you endless joy! 😊\n\nYou deserve all the happiness!",
-            "Nine-Nine! 👮‍♀️\n\nHappy Birthday to my real-life Amy Santiago!"
+            "Happy Birthday to the smartest, funniest, most amazing person! 🎉",
         ];
 
         function startBirthdayAnimation() {
