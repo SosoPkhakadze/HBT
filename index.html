@@ -187,6 +187,19 @@
             text-align: center;
         }
 
+        /* Character avatar at top of board */
+        .board-character-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.5);
+            margin: 0 auto 15px;
+            display: block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
         .board-container {
             background: rgba(255, 255, 255, 0.15);
             padding: 20px;
@@ -283,6 +296,26 @@
 
         .ships-container {
             margin: 20px 0;
+        }
+
+        .ship-selector {
+            display: none;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .ship-selector.active {
+            display: block;
+            border: 3px solid #4a9eff;
+            animation: pulse 1s infinite;
+        }
+
+        .ship-selector-text {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #ffd700;
         }
 
         .setup-phase button {
@@ -466,7 +499,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 5;
+            z-index: 500;
             overflow: hidden;
         }
 
@@ -474,12 +507,12 @@
             position: absolute;
             font-size: 3em;
             cursor: pointer;
-            pointer-events: all;
+            pointer-events: all !important;
             animation: floatDown linear infinite;
             opacity: 1;
             transition: transform 0.3s, filter 0.3s;
             filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
-            z-index: 100;
+            z-index: 500 !important;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
             padding: 10px;
@@ -489,12 +522,12 @@
             transform: scale(1.3) rotate(15deg);
             filter: drop-shadow(0 8px 15px rgba(255, 215, 0, 0.8)) brightness(1.3);
             animation-play-state: paused;
-            z-index: 101;
+            z-index: 501 !important;
         }
 
         .floating-envelope:active {
             transform: scale(1.4) rotate(20deg);
-            z-index: 101;
+            z-index: 501 !important;
         }
 
         .floating-heart {
@@ -504,7 +537,7 @@
             animation: floatDown linear infinite;
             opacity: 0.8;
             pointer-events: none;
-            z-index: 5;
+            z-index: 499;
             filter: drop-shadow(0 3px 6px rgba(255, 107, 157, 0.5));
         }
 
@@ -653,19 +686,40 @@
                 gap: 15px;
             }
 
+            /* Keep characters visible on mobile */
             .character-box {
                 width: 100%;
-                max-width: 300px;
-                padding: 20px;
+                max-width: none;
+                padding: 15px;
+                margin: 0;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 15px;
             }
 
             .character-image {
-                max-width: 200px;
-                height: 200px;
+                max-width: 80px;
+                height: 80px;
+                margin: 0;
+            }
+
+            .character-name {
+                font-size: 1em;
+                margin: 0;
             }
 
             .container {
-                padding: 20px;
+                padding: 15px;
+            }
+
+            .game-header h2 {
+                font-size: 1.3em;
+            }
+
+            .game-header p {
+                font-size: 0.9em;
             }
 
             .game-area {
@@ -675,25 +729,34 @@
             }
 
             .board {
-                grid-template-columns: repeat(3, 60px);
-                grid-template-rows: repeat(3, 60px);
+                grid-template-columns: repeat(3, 65px);
+                grid-template-rows: repeat(3, 65px);
             }
 
             .cell {
-                width: 60px;
-                height: 60px;
-            }
-
-            .floating-envelope {
-                font-size: 2.5em;
-            }
-
-            .floating-heart {
+                width: 65px;
+                height: 65px;
                 font-size: 1.3em;
             }
 
+            .cell.ship-preview {
+                border: 3px dashed #4a9eff;
+            }
+
+            .floating-envelope {
+                font-size: 2.8em;
+            }
+
+            .floating-heart {
+                font-size: 1.5em;
+            }
+
+            .static-envelope {
+                font-size: 4em;
+            }
+
             .letter-modal {
-                width: 85%;
+                width: 90%;
                 padding: 25px;
             }
 
@@ -710,6 +773,91 @@
                 width: 280px;
                 height: 280px;
             }
+
+            .crown {
+                font-size: 3em;
+            }
+
+            .winner-screen h1 {
+                font-size: 1.8em;
+            }
+
+            .loser-screen h1 {
+                font-size: 1.8em;
+            }
+
+            .chinese-text {
+                font-size: 1.2em;
+            }
+
+            .winner-text {
+                font-size: 1em;
+            }
+
+            .draggable-ship {
+                font-size: 0.9em;
+                padding: 10px 20px;
+                margin: 5px;
+            }
+
+            .setup-phase button {
+                font-size: 0.85em;
+                padding: 10px 20px;
+                margin: 5px;
+            }
+
+            .message-box {
+                font-size: 0.95em;
+                padding: 12px;
+            }
+
+            .board-title {
+                font-size: 1.1em;
+            }
+
+            .board-character-avatar {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .character-image {
+                max-width: 70px;
+                height: 70px;
+            }
+
+            .character-name {
+                font-size: 0.9em;
+            }
+
+            .board {
+                grid-template-columns: repeat(3, 55px);
+                grid-template-rows: repeat(3, 55px);
+            }
+
+            .cell {
+                width: 55px;
+                height: 55px;
+                font-size: 1.2em;
+            }
+
+            .static-envelope {
+                font-size: 3.5em;
+            }
+
+            .floating-envelope {
+                font-size: 2.5em;
+            }
+
+            .game-header h2 {
+                font-size: 1.2em;
+            }
+
+            .board-character-avatar {
+                width: 50px;
+                height: 50px;
+            }
         }
 
         /* Static random envelopes (bigger, clickable, random positions) */
@@ -717,16 +865,22 @@
             position: fixed;
             font-size: 4.5em;
             cursor: pointer;
-            z-index: 100;
+            z-index: 500 !important;
             transition: transform 0.3s, filter 0.3s;
             filter: drop-shadow(0 8px 15px rgba(255, 215, 0, 0.6));
             animation: pulse 2s ease-in-out infinite;
-            pointer-events: all;
+            pointer-events: all !important;
         }
 
         .static-envelope:hover {
             transform: scale(1.4) rotate(20deg);
             filter: drop-shadow(0 10px 25px rgba(255, 215, 0, 1)) brightness(1.5);
+            z-index: 501 !important;
+        }
+
+        .static-envelope:active {
+            transform: scale(1.5) rotate(25deg);
+            z-index: 501 !important;
         }
 
         @keyframes pulse {
@@ -735,6 +889,71 @@
             }
             50% {
                 transform: scale(1.15) rotate(5deg);
+            }
+        }
+
+        /* Character reaction popup */
+        .character-popup {
+            position: fixed;
+            z-index: 1500;
+            animation: popupBounce 2.2s ease-out forwards;
+            pointer-events: none;
+        }
+
+        .character-popup.tako-popup {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .character-popup.opponent-popup {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .character-popup img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 5px solid #ffd700;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.9);
+        }
+
+        @keyframes popupBounce {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            20% {
+                transform: translate(-50%, -50%) scale(1.15);
+                opacity: 1;
+            }
+            30% {
+                transform: translate(-50%, -50%) scale(0.95);
+            }
+            40% {
+                transform: translate(-50%, -50%) scale(1.05);
+                opacity: 1;
+            }
+            90% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .character-popup.tako-popup {
+                left: 20%;
+            }
+
+            .character-popup.opponent-popup {
+                left: 80%;
             }
         }
 
@@ -967,12 +1186,6 @@
     </div>
 
     <div id="gameWrapper" class="main-game-wrapper" style="display: none;">
-        <!-- Tako's Character Box -->
-        <div class="character-box">
-            <img src="assets/tako_normal.png" alt="Tako" class="character-image" id="takoImage">
-            <div class="character-name">Tako 💖</div>
-        </div>
-
         <!-- Game Container -->
         <div class="container">
             <div class="game-screen" id="gameScreen" style="display: block;">
@@ -1003,7 +1216,8 @@
                     <!-- Tako's Board -->
                     <div class="player-section">
                         <div class="board-container">
-                            <div class="board-title">Your Fleet 💙</div>
+                            <img src="assets/tako_normal.png" alt="Tako" class="board-character-avatar" id="takoImage">
+                            <div class="board-title">Tako 💖</div>
                             <div class="board" id="playerBoard"></div>
                         </div>
                     </div>
@@ -1011,7 +1225,8 @@
                     <!-- Opponent's Board -->
                     <div class="player-section">
                         <div class="board-container">
-                            <div class="board-title">Enemy Waters 🔥</div>
+                            <img src="assets/china_normal.png" alt="Opponent" class="board-character-avatar" id="opponentImage">
+                            <div class="board-title">小龙 (Xiǎo Lóng) 🐉</div>
                             <div class="board" id="opponentBoard"></div>
                         </div>
                     </div>
@@ -1029,8 +1244,7 @@
                 <img src="assets/winner.png" alt="Winner Tako" class="winner-image">
                 <div class="chinese-text">你是最棒的！(You are the best!)</div>
                 <div class="winner-text">
-                    You've defeated the mighty opponent and proven your strategic genius!<br>
-                    Just like Amy Santiago would be proud! 🎉<br><br>
+                    არც არავის ეპარებოდა ეჭვი! 🎉<br>
                     <strong style="font-size: 1.2em; color: #ffd700;">But I am the real winner because I have you!<br>Happy Birthday my little princess! 👸💖</strong>
                 </div>
                 <button class="play-again" onclick="resetGame()">Play Again</button>
@@ -1047,12 +1261,6 @@
                 </div>
                 <button class="play-again" onclick="resetGame()">Try Again</button>
             </div>
-        </div>
-
-        <!-- Opponent's Character Box -->
-        <div class="character-box">
-            <img src="assets/china_normal.png" alt="Opponent" class="character-image" id="opponentImage">
-            <div class="character-name">小龙 (Xiǎo Lóng) 🐉</div>
         </div>
     </div>
 
@@ -1109,21 +1317,27 @@
             
             const messageIndex = Math.floor(Math.random() * birthdayMessages.length);
             
-            // Add both click and touch events for better compatibility
-            const openLetterHandler = (e) => {
-                e.preventDefault();
+            // Simple click handler
+            envelope.onclick = function(e) {
                 e.stopPropagation();
-                envelope.remove();
+                this.remove();
                 openLetter(birthdayMessages[messageIndex]);
             };
             
-            envelope.addEventListener('click', openLetterHandler);
-            envelope.addEventListener('touchstart', openLetterHandler);
+            // Touch event for mobile
+            envelope.ontouchstart = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.remove();
+                openLetter(birthdayMessages[messageIndex]);
+            };
             
             background.appendChild(envelope);
             
             setTimeout(() => {
-                envelope.remove();
+                if (envelope.parentNode) {
+                    envelope.remove();
+                }
             }, 22000);
         }
 
@@ -1141,17 +1355,24 @@
             
             const messageIndex = Math.floor(Math.random() * birthdayMessages.length);
             
-            const openLetterHandler = (e) => {
-                e.preventDefault();
+            // Simple click handler
+            envelope.onclick = function(e) {
                 e.stopPropagation();
-                envelope.remove();
+                this.remove();
                 openLetter(birthdayMessages[messageIndex]);
                 // Create a new one after a delay
                 setTimeout(createStaticEnvelope, 3000);
             };
             
-            envelope.addEventListener('click', openLetterHandler);
-            envelope.addEventListener('touchstart', openLetterHandler);
+            // Touch event for mobile
+            envelope.ontouchstart = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.remove();
+                openLetter(birthdayMessages[messageIndex]);
+                // Create a new one after a delay
+                setTimeout(createStaticEnvelope, 3000);
+            };
             
             document.body.appendChild(envelope);
         }
@@ -1227,26 +1448,26 @@
         let placedShips = [false, false];
         let isPlayerTurn = true;
         let canClick = true;
+        let isMobile = window.innerWidth <= 768;
+        let currentShipToPlace = 0;
+        let isPlacingMode = false;
 
         const BOARD_SIZE = 3;
         const SHIP_SIZES = [2, 2];
 
         // Chinese taunts when opponent hits Tako's ship
         const chineseHits = [
-            "哈哈输了！(Haha, you lose!)",
-            "中国比你强！(China is better than you!)",
-            "太弱了！(Too weak!)",
-            "你不行啊！(You can't do it!)",
-            "我太厉害了！(I'm too strong!)"
+            "ჩინეთი შენ დაგამარცხებს!",
+            "ჰონგ კონგში არ დაგინახო ჩამოსული",
+            "ბებია მყავდა ქართველი",
         ];
 
         // Tako's taunts when she hits opponent's ship
         const takoHits = [
-            "接招吧你个笨蛋！(Take that, you fool!)",
+            "ვაი ვაი ბიძიაა",
+            "შენ მოსაგებს დავხატავ",
             "მასე მოგიხდება შე წვრილთვალება!",
-            "哈！打中了！(Ha! Got you!)",
-            "吃我一炮！(Eat this!)",
-            "你完蛋了！(You're done for!)"
+            "吃我一炮",
         ];
 
         const shipSunkMessages = [
@@ -1261,23 +1482,31 @@
             "Direct hit! Ship eliminated! 💪"
         ];
 
+        // Show character reaction popup (bouncing image in center/sides)
+        function showCharacterPopup(imageSrc, isTako) {
+            const popup = document.createElement('div');
+            popup.className = `character-popup ${isTako ? 'tako-popup' : 'opponent-popup'}`;
+            
+            const img = document.createElement('img');
+            img.src = imageSrc;
+            popup.appendChild(img);
+            
+            document.body.appendChild(popup);
+            
+            setTimeout(() => {
+                popup.remove();
+            }, 2200);
+        }
+
         function showFloatingTaunt(message, isFromTako) {
             const taunt = document.createElement('div');
             taunt.className = `floating-taunt ${isFromTako ? 'tako-taunt' : 'opponent-taunt'}`;
             taunt.textContent = message;
             
-            // Position near the character image
-            if (isFromTako) {
-                const takoBox = document.querySelector('.character-box:first-child');
-                const rect = takoBox.getBoundingClientRect();
-                taunt.style.left = (rect.right - 50) + 'px';
-                taunt.style.top = (rect.top + rect.height / 2) + 'px';
-            } else {
-                const opponentBox = document.querySelector('.character-box:last-child');
-                const rect = opponentBox.getBoundingClientRect();
-                taunt.style.left = (rect.left - 200) + 'px';
-                taunt.style.top = (rect.top + rect.height / 2) + 'px';
-            }
+            // Position in center of screen
+            taunt.style.left = '50%';
+            taunt.style.top = '50%';
+            taunt.style.transform = 'translate(-50%, -50%)';
             
             document.body.appendChild(taunt);
             
@@ -1373,16 +1602,64 @@
         }
 
         function setupDragAndDrop() {
-            const ships = document.querySelectorAll('.draggable-ship');
-            ships.forEach(ship => {
-                ship.addEventListener('dragstart', handleDragStart);
-                ship.addEventListener('dragend', handleDragEnd);
-            });
+            isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Mobile: Click ship buttons to select, then click board to place
+                const ships = document.querySelectorAll('.draggable-ship');
+                ships.forEach((ship, index) => {
+                    ship.onclick = () => {
+                        if (!placedShips[index]) {
+                            currentShipToPlace = index;
+                            isPlacingMode = true;
+                            document.getElementById('messageBox').textContent = `Tap on the board to place Ship ${index + 1} (${currentOrientation})`;
+                            ships.forEach(s => s.style.border = '3px solid #4a9eff');
+                            ship.style.border = '5px solid #00ff00';
+                        }
+                    };
+                });
+                
+                // Add touch events to board cells
+                const playerBoardEl = document.getElementById('playerBoard');
+                playerBoardEl.addEventListener('click', handleMobilePlace);
+                
+            } else {
+                // Desktop: Original drag and drop
+                const ships = document.querySelectorAll('.draggable-ship');
+                ships.forEach(ship => {
+                    ship.addEventListener('dragstart', handleDragStart);
+                    ship.addEventListener('dragend', handleDragEnd);
+                });
 
-            const playerBoardEl = document.getElementById('playerBoard');
-            playerBoardEl.addEventListener('dragover', handleDragOver);
-            playerBoardEl.addEventListener('drop', handleDrop);
-            playerBoardEl.addEventListener('dragleave', handleDragLeave);
+                const playerBoardEl = document.getElementById('playerBoard');
+                playerBoardEl.addEventListener('dragover', handleDragOver);
+                playerBoardEl.addEventListener('drop', handleDrop);
+                playerBoardEl.addEventListener('dragleave', handleDragLeave);
+            }
+        }
+
+        function handleMobilePlace(e) {
+            if (!isPlacingMode) return;
+            
+            const cell = e.target.closest('.cell');
+            if (!cell) return;
+            
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+            
+            if (placeShip(row, col, currentShipToPlace)) {
+                const shipElement = document.getElementById(`ship${currentShipToPlace + 1}`);
+                shipElement.classList.add('hidden');
+                shipElement.style.border = '3px solid #4a9eff';
+                isPlacingMode = false;
+                currentShipToPlace = -1;
+                
+                if (shipsPlaced < 2) {
+                    document.getElementById('messageBox').textContent = 'Tap a ship button to place it!';
+                } else {
+                    document.getElementById('messageBox').textContent = 'All ships placed! Ready to start battle!';
+                }
+            }
         }
 
         function handleDragStart(e) {
@@ -1599,13 +1876,12 @@
             }
             gameStarted = true;
             document.getElementById('setupPhase').style.display = 'none';
-            document.getElementById('messageBox').textContent = 'Battle started! Opponent goes first... 🎯';
+            document.getElementById('messageBox').textContent = 'Battle started! Your turn first! 🎯';
             renderBoard('opponentBoard', opponentBoard, false);
             
-            // Opponent goes first
-            isPlayerTurn = false;
-            canClick = false;
-            setTimeout(opponentAttack, 2000);
+            // Tako goes first
+            isPlayerTurn = true;
+            canClick = true;
         }
 
         function playerAttack(row, col) {
@@ -1619,11 +1895,11 @@
                 opponentBoard[row][col] = 2;
                 playerHits++;
                 
-                changeTakoImage('assets/tako_happy.png', 1500);
+                changeTakoImage('assets/tako_happy.png', 2500);
                 
                 // Randomly choose between sad and angry for opponent
                 const opponentReaction = Math.random() < 0.5 ? 'assets/china_sad.png' : 'assets/china_angry.png';
-                changeOpponentImage(opponentReaction, 1500);
+                changeOpponentImage(opponentReaction, 2500);
                 
                 const randomTaunt = takoHits[Math.floor(Math.random() * takoHits.length)];
                 showFloatingTaunt(randomTaunt, true);
@@ -1665,8 +1941,8 @@
                 
                 // Randomly choose between sad and angry for Tako when hit
                 const takoReaction = Math.random() < 0.5 ? 'assets/tako_sad.png' : 'assets/tako_angry.png';
-                changeTakoImage(takoReaction, 1500);
-                changeOpponentImage('assets/china_happy.png', 1500);
+                changeTakoImage(takoReaction, 2500);
+                changeOpponentImage('assets/china_happy.png', 2500);
                 
                 const randomTaunt = chineseHits[Math.floor(Math.random() * chineseHits.length)];
                 showFloatingTaunt(randomTaunt, false);
@@ -1711,6 +1987,10 @@
         function changeTakoImage(imageName, duration) {
             const img = document.getElementById('takoImage');
             img.src = imageName;
+            
+            // Show popup reaction
+            showCharacterPopup(imageName, true);
+            
             setTimeout(() => {
                 img.src = 'assets/tako_normal.png';
             }, duration);
@@ -1719,6 +1999,10 @@
         function changeOpponentImage(imageName, duration) {
             const img = document.getElementById('opponentImage');
             img.src = imageName;
+            
+            // Show popup reaction
+            showCharacterPopup(imageName, false);
+            
             setTimeout(() => {
                 img.src = 'assets/china_normal.png';
             }, duration);
